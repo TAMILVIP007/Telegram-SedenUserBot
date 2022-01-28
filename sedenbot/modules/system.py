@@ -88,9 +88,8 @@ def pip3(message):
         if sonuc:
             if len(sonuc) > 4096:
                 edit(message, f'`{get_translation("outputTooLarge")}`')
-                file = open('pip3.txt', 'w+')
-                file.write(sonuc)
-                file.close()
+                with open('pip3.txt', 'w+') as file:
+                    file.write(sonuc)
                 reply_doc(message, 'pip3.txt', delete_after_send=True)
                 return
             edit(message, get_translation('sedenQuery', ['**', '`', pipsorgu, sonuc]))
@@ -175,9 +174,8 @@ def terminal(message):
         pass
 
     if len(sonuc) > 4096:
-        output = open('output.txt', 'w+')
-        output.write(sonuc)
-        output.close()
+        with open('output.txt', 'w+') as output:
+            output.write(sonuc)
         reply_doc(
             message,
             'output.txt',
@@ -199,13 +197,11 @@ def eval(message):
         return
 
     try:
-        evaluation = safe_eval(args)
-        if evaluation:
+        if evaluation := safe_eval(args):
             if isinstance(evaluation, str):
                 if len(evaluation) >= 4096:
-                    file = open('output.txt', 'w+')
-                    file.write(evaluation)
-                    file.close()
+                    with open('output.txt', 'w+') as file:
+                        file.write(evaluation)
                     reply_doc(
                         message,
                         'output.txt',

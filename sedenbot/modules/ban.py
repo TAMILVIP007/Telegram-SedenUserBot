@@ -384,9 +384,8 @@ def pin_message(client, message):
 
 @sedenify(pattern='^.unpin$', compat=False, private=False, admin=True)
 def unpin_message(client, message):
-    reply = message.reply_to_message
     chat_id = message.chat.id
-    if reply:
+    if reply := message.reply_to_message:
         try:
             client.unpin_chat_message(chat_id, reply.message_id)
         except Exception as e:
@@ -444,9 +443,8 @@ def get_users(client, message):
         edit(message, out)
     except MessageTooLong:
         edit(message, f'`{get_translation("outputTooLarge")}`')
-        file = open('userslist.txt', 'w+')
-        file.write(out)
-        file.close()
+        with open('userslist.txt', 'w+') as file:
+            file.write(out)
         reply_doc(
             message,
             'userslist.txt',
@@ -518,9 +516,7 @@ def zombie_accounts(client, message):
 
 @sedenify(incoming=True, outgoing=False, compat=False)
 def mute_check(client, message):
-    muted = sql.is_muted(message.chat.id, message.from_user.id)
-
-    if muted:
+    if muted := sql.is_muted(message.chat.id, message.from_user.id):
         sleep(0.1)
         message.delete()
 

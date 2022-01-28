@@ -23,8 +23,7 @@ from sedenecem.core import (
 
 @sedenify(pattern='^.purge$', compat=False, admin=True)
 def purge(client, message):
-    msg = message.reply_to_message
-    if msg:
+    if msg := message.reply_to_message:
         itermsg = client.iter_history(
             message.chat.id, offset_id=msg.message_id, reverse=True
         )
@@ -36,7 +35,7 @@ def purge(client, message):
 
     for message in itermsg:
         try:
-            count = count + 1
+            count += 1
             client.delete_messages(message.chat.id, message.message_id)
         except FloodWait as e:
             sleep(e.x)
@@ -61,7 +60,7 @@ def purgeme(client, message):
     for message in itermsg:
         if i > int(count) + 1:
             break
-        i = i + 1
+        i += 1
         message.delete()
 
     smsg = reply(message, get_translation('purgeResult', ['**', '`', str(count)]))
@@ -73,8 +72,7 @@ def purgeme(client, message):
 
 @sedenify(pattern='^.del$', compat=False, admin=True)
 def delete(client, message):
-    msg_src = message.reply_to_message
-    if msg_src:
+    if msg_src := message.reply_to_message:
         if msg_src.from_user.id:
             try:
                 client.delete_messages(message.chat.id, msg_src.message_id)

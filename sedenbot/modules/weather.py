@@ -12,10 +12,7 @@ from sedenbot import HELP, SEDEN_LANG, WEATHER
 from sedenecem.core import edit, extract_args, get_translation, sedenify
 
 # ===== CONSTANT =====
-if WEATHER:
-    DEFCITY = WEATHER
-else:
-    DEFCITY = None
+DEFCITY = WEATHER or None
 # ====================
 
 

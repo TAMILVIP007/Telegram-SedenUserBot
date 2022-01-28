@@ -76,10 +76,7 @@ def github(message):
     def get_repos():
         if not repos or len(repos) < 1:
             return f'`{get_translation("gitRepo")}`'
-        out = ''
-        for i in repos:
-            out += f'{i}\n'
-        return out
+        return ''.join(f'{i}\n' for i in repos)
 
     edit(
         message,

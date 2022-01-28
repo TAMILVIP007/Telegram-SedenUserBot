@@ -18,9 +18,7 @@ from speedtest import Speedtest
 @sedenify(pattern='^.speedtest')
 def speed_test(message):
     input_str = extract_args(message)
-    as_text = False
-    if input_str == 'text':
-        as_text = True
+    as_text = input_str == 'text'
     edit(message, f'`{get_translation("speedtest")}`')
     start = datetime.now()
     spdtst = Speedtest()
@@ -76,7 +74,7 @@ def speed_test(message):
                     ping_time,
                     i_s_p,
                     i_s_p_rating,
-                    f'ERROR: {str(exc)}',
+                    f'ERROR: {exc}',
                 ],
             ),
         )

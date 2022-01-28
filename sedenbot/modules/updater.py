@@ -30,11 +30,11 @@ requirements_path = path.join(
 
 
 def gen_chlog(repo, diff):
-    ch_log = ''
     d_form = '%d/%m/%y'
-    for c in repo.iter_commits(diff):
-        ch_log += f'%1•%1  %2[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>%2\n'
-    return ch_log
+    return ''.join(
+        f'%1•%1  %2[{c.committed_datetime.strftime(d_form)}]: {c.summary} <{c.author}>%2\n'
+        for c in repo.iter_commits(diff)
+    )
 
 
 def update_requirements():
@@ -102,9 +102,8 @@ def upstream(ups):
     if conf != 'now' and not force_update:
         if len(changelog) > 4096:
             edit(ups, f'`{get_translation("updateOutput")}`')
-            file = open('changelog.txt', 'w+')
-            file.write(changelog)
-            file.close()
+            with open('changelog.txt', 'w+') as file:
+                file.write(changelog)
             reply_doc(ups, ups.chat.id, 'changelog.txt', delete_after_send=True)
         else:
             edit(

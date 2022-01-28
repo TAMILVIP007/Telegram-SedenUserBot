@@ -54,7 +54,7 @@ def last_fm(message):
         recent = User(LASTFM_USERNAME, lastfm).get_recent_tracks(limit=5)
         playing = User(LASTFM_USERNAME, lastfm).get_now_playing()
         output = get_translation('lastfmProcess2', [LASTFM_USERNAME, username, '__'])
-        for i, track in enumerate(recent):
+        for track in recent:
             printable = artist_and_song(track)
             tags = gettags(track)
             rectrack = quote(str(printable))

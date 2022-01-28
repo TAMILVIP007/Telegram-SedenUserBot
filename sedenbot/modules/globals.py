@@ -123,9 +123,7 @@ def gbanlist(message):
     if not users:
         return edit(message, f'`{get_translation("listEmpty")}`')
     gban_list = f'**{get_translation("gbannedUsers")}**\n'
-    count = 0
-    for i in users:
-        count += 1
+    for count, i in enumerate(users, start=1):
         gban_list += f'**{count} -** `{i.sender}`\n'
     return edit(message, gban_list)
 
@@ -233,9 +231,7 @@ def gmutelist(message):
     if not users:
         return edit(message, f'`{get_translation("listEmpty")}`')
     gmute_list = f'**{get_translation("gmutedUsers")}**\n'
-    count = 0
-    for i in users:
-        count += 1
+    for count, i in enumerate(users, start=1):
         gmute_list += f'**{count} -** `{i.sender}`\n'
     return edit(message, gmute_list)
 

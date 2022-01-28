@@ -193,7 +193,7 @@ def approvepm(client, message):
         uid = replied_user.id
     else:
         aname = message.chat
-        if not aname.type == 'private':
+        if aname.type != 'private':
             edit(message, f'`{get_translation("pmApproveError")}`')
             return
         name0 = aname.first_name
@@ -231,7 +231,7 @@ def disapprovepm(message):
         uid = replied_user.id
     else:
         aname = message.chat
-        if not aname.type == 'private':
+        if aname.type != 'private':
             edit(message, f'`{get_translation("pmApproveError")}`')
             return
         name0 = aname.first_name

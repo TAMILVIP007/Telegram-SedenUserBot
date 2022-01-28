@@ -44,7 +44,7 @@ LOGS = getLogger(__name__)
 def get_translation(transKey, params: list = None):
     ret = _tr.get_translation(SEDEN_LANG, transKey)
 
-    if params and len(params) > 0:
+    if params:
         for i in reversed(range(len(params))):
             ret = ret.replace(f'%{i+1}', str(params[i]))
 
@@ -277,12 +277,13 @@ app = PyroClient(
     SESSION,
     api_id=API_ID,
     api_hash=API_HASH,
-    app_version=f'Seden UserBot',
+    app_version='Seden UserBot',
     device_model='DerUntergang',
     system_version=f'v{BOT_VERSION}',
     lang_code='tr',
     test_mode=DEEPGRAM,
 )
+
 
 
 # delete these variables to add some security
@@ -293,12 +294,11 @@ del API_HASH
 
 def __get_modules():
     folder = 'sedenbot/modules'
-    modules = [
+    return [
         f[:-3]
         for f in listdir(folder)
         if isfile(f'{folder}/{f}') and f[-3:] == '.py' and f != '__init__.py'
     ]
-    return modules
 
 
 def __import_modules():

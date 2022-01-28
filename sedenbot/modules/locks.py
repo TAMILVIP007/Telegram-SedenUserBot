@@ -83,11 +83,9 @@ def lock(client, message):
                 message,
                 get_translation('locksUnlockNoArgs' if unlock else 'locksLockNoArgs'),
             )
-            return
         else:
             edit(message, get_translation('lockError', ['`', kilit]))
-            return
-
+        return
     kilitle = client.get_chat(message.chat.id)
 
     msg = get_on_none(msg, kilitle.permissions.can_send_messages)
@@ -131,10 +129,7 @@ def lock(client, message):
 
 
 def get_on_none(item, defval):
-    if item is None:
-        return defval
-
-    return item
+    return defval if item is None else item
 
 
 HELP.update({'locks': get_translation('lockInfo')})

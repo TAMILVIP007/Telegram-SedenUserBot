@@ -41,9 +41,29 @@ def mention_afk(msg):
     me = TEMP_SETTINGS['ME']
     mentioned = msg.mentioned
     rep_m = msg.reply_to_message
-    if mentioned or rep_m and rep_m.from_user and rep_m.from_user.id == me.id:
-        if TEMP_SETTINGS['IS_AFK']:
-            if msg.from_user.id not in TEMP_SETTINGS['AFK_USERS']:
+    if (
+        mentioned or rep_m and rep_m.from_user and rep_m.from_user.id == me.id
+    ) and TEMP_SETTINGS['IS_AFK']:
+        if msg.from_user.id not in TEMP_SETTINGS['AFK_USERS']:
+            if 'AFK_REASON' in TEMP_SETTINGS:
+                reply(
+                    msg,
+                    get_translation(
+                        "afkMessage2",
+                        [
+                            '**',
+                            me.first_name,
+                            me.id,
+                            '`',
+                            TEMP_SETTINGS['AFK_REASON'],
+                        ],
+                    ),
+                )
+            else:
+                reply(msg, f"```{choice(AFKSTR)}```")
+            TEMP_SETTINGS['AFK_USERS'].update({msg.from_user.id: 1})
+        else:
+            if TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] % randint(1, 2) == 0:
                 if 'AFK_REASON' in TEMP_SETTINGS:
                     reply(
                         msg,
@@ -60,35 +80,10 @@ def mention_afk(msg):
                     )
                 else:
                     reply(msg, f"```{choice(AFKSTR)}```")
-                TEMP_SETTINGS['AFK_USERS'].update({msg.from_user.id: 1})
-                TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
-            else:
-                if TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] % randint(1, 2) == 0:
-                    if 'AFK_REASON' in TEMP_SETTINGS:
-                        reply(
-                            msg,
-                            get_translation(
-                                "afkMessage2",
-                                [
-                                    '**',
-                                    me.first_name,
-                                    me.id,
-                                    '`',
-                                    TEMP_SETTINGS['AFK_REASON'],
-                                ],
-                            ),
-                        )
-                    else:
-                        reply(msg, f"```{choice(AFKSTR)}```")
-                    TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] = (
-                        TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] + 1
-                    )
-                    TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
-                else:
-                    TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] = (
-                        TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] + 1
-                    )
-                    TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
+            TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] = (
+                TEMP_SETTINGS['AFK_USERS'][msg.from_user.id] + 1
+            )
+        TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
     raise ContinuePropagation
 
 
@@ -124,7 +119,6 @@ def afk_on_pm(message):
             else:
                 reply(message, f"```{choice(AFKSTR)}```")
             TEMP_SETTINGS['AFK_USERS'].update({message.from_user.id: 1})
-            TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
         else:
             if TEMP_SETTINGS['AFK_USERS'][message.from_user.id] % randint(1, 2) == 0:
                 if 'AFK_REASON' in TEMP_SETTINGS:
@@ -143,15 +137,10 @@ def afk_on_pm(message):
                     )
                 else:
                     reply(message, f"```{choice(AFKSTR)}```")
-                TEMP_SETTINGS['AFK_USERS'][message.from_user.id] = (
-                    TEMP_SETTINGS['AFK_USERS'][message.from_user.id] + 1
-                )
-                TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
-            else:
-                TEMP_SETTINGS['AFK_USERS'][message.from_user.id] = (
-                    TEMP_SETTINGS['AFK_USERS'][message.from_user.id] + 1
-                )
-                TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
+            TEMP_SETTINGS['AFK_USERS'][message.from_user.id] = (
+                TEMP_SETTINGS['AFK_USERS'][message.from_user.id] + 1
+            )
+        TEMP_SETTINGS['COUNT_MSG'] = TEMP_SETTINGS['COUNT_MSG'] + 1
     raise ContinuePropagation
 
 

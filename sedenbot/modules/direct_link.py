@@ -36,10 +36,7 @@ def direct(message):
         if isinstance(items, str):
             return url.startswith(items) if starts else items in url
 
-        for item in items:
-            if url.startswith(item) if starts else item in url:
-                return True
-        return False
+        return any(url.startswith(item) if starts else item in url for item in items)
 
     for link in direct.replace('\n', ' ').split():
         try:
@@ -206,8 +203,8 @@ def useragent():
     agent = soup.find('article')
     if agent:
         agent = agent.find('li')
-        if agent:
-            return agent.find('a').text.replace('"', '')
+    if agent:
+        return agent.find('a').text.replace('"', '')
 
     return 'Googlebot/2.1 (+http://www.google.com/bot.html)'
 

@@ -36,13 +36,7 @@ def get_snips():
 
 
 def add_snip(keyword, reply, f_mesg_id):
-    to_check = get_snip(keyword)
-    if not to_check:
-        adder = Snips(keyword, reply, f_mesg_id)
-        SESSION.add(adder)
-        SESSION.commit()
-        return True
-    else:
+    if to_check := get_snip(keyword):
         rem = SESSION.query(Snips).filter(Snips.snip == keyword)
         rem.delete()
         SESSION.commit()
@@ -50,13 +44,17 @@ def add_snip(keyword, reply, f_mesg_id):
         SESSION.add(adder)
         SESSION.commit()
         return False
+    else:
+        adder = Snips(keyword, reply, f_mesg_id)
+        SESSION.add(adder)
+        SESSION.commit()
+        return True
 
 
 def remove_snip(keyword):
-    to_check = get_snip(keyword)
-    if not to_check:
-        return False
-    else:
+    if to_check := get_snip(keyword):
         SESSION.delete(to_check)
         SESSION.commit()
         return True
+    else:
+        return False

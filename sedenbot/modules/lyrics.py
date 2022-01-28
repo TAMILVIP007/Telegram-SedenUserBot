@@ -15,9 +15,7 @@ from sedenecem.core import edit, extract_args, get_translation, reply_doc, seden
 @sedenify(pattern='^.lyrics')
 def lyrics(message):
     args = extract_args(message)
-    if r"-" in args:
-        pass
-    else:
+    if r"-" not in args:
         edit(message, f'`{get_translation("lyricsError")}`')
         return
 

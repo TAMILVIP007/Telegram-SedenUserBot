@@ -95,9 +95,7 @@ def manage_env(client, message):
 
         if heroku_mode and items[0] in heroku_env:
             value = heroku_env[items[0]]
-        elif not heroku_mode and (value := environ.get(items[0], None)):
-            pass
-        else:
+        elif heroku_mode or not (value := environ.get(items[0], None)):
             edit(message, get_translation('envNotFound', ['`', '**', items[0]]))
             return
 
@@ -140,9 +138,7 @@ def manage_env(client, message):
 
         if heroku_mode and items[0] in heroku_env:
             value = heroku_env[items[0]]
-        elif not heroku_mode and (value := environ.get(items[0], None)):
-            pass
-        else:
+        elif heroku_mode or not (value := environ.get(items[0], None)):
             edit(message, get_translation('envNotFound', ['`', '**', items[0]]))
             return
 

@@ -36,8 +36,7 @@ def kread(chat):
 
 
 def unkread(chat):
-    rem = SESSION.query(KRead).get((str(chat)))
-    if rem:
+    if rem := SESSION.query(KRead).get((str(chat))):
         SESSION.delete(rem)
         SESSION.commit()
         return True

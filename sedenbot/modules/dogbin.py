@@ -28,7 +28,7 @@ def paste(client, message):
 
     if match:
         dogbin = match
-    elif reply_id:
+    else:
         dogbin = message.reply_to_message
         if dogbin.media:
             downloaded_file_name = client.download_media(
@@ -38,9 +38,7 @@ def paste(client, message):
             m_list = None
             with open(downloaded_file_name, 'rb') as fd:
                 m_list = fd.readlines()
-            dogbin = ''
-            for m in m_list:
-                dogbin += m.decode('UTF-8') + '\r'
+            dogbin = ''.join(m.decode('UTF-8') + '\r' for m in m_list)
             remove(downloaded_file_name)
         else:
             dogbin = dogbin.dogbin

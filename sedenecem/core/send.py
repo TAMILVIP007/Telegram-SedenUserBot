@@ -27,9 +27,8 @@ def send(client, chat, text, fix_markdown=False, reply_id=None):
             )
         return
 
-    file = open('temp.txt', 'w+')
-    file.write(text)
-    file.close()
+    with open('temp.txt', 'w+') as file:
+        file.write(text)
     send_doc(client, chat, 'temp.txt')
 
 

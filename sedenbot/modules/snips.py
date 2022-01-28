@@ -85,10 +85,7 @@ def snip_list(message):
     for a_snip in all_snips:
         if list == f'`{get_translation("noSnip")}`':
             list = f'{get_translation("snipChats")}\n'
-            list += f'`${a_snip.snip}`\n'
-        else:
-            list += f'`${a_snip.snip}`\n'
-
+        list += f'`${a_snip.snip}`\n'
     edit(message, list)
 
 
@@ -119,9 +116,7 @@ def get_snip(message):
             return
 
         snipname = extract_args(message).split()[0][1:]
-        snip = get_snip(snipname)
-
-        if snip:
+        if snip := get_snip(snipname):
             if snip.f_mesg_id:
                 msg_o = get_messages(LOG_ID, msg_ids=int(snip.f_mesg_id))
                 if msg_o and len(msg_o) > 0 and not msg_o[-1].empty:

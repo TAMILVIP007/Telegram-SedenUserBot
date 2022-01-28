@@ -285,7 +285,7 @@ REACTS = [
     '(｡◕‿◕｡)',
 ]
 
-RUNS = [get_translation(f'runstr{i+1}') for i in range(0, 48)]
+RUNS = [get_translation(f'runstr{i+1}') for i in range(48)]
 
 SHGS = [
     '┐(´д｀)┌',
@@ -462,10 +462,7 @@ def copypasta(message):
         elif owo.lower() == b_char:
             reply_text += '🅱️'
         else:
-            if bool(getrandbits(1)):
-                reply_text += owo.upper()
-            else:
-                reply_text += owo.lower()
+            reply_text += owo.upper() if bool(getrandbits(1)) else owo.lower()
     reply_text += choice(EMOJIS)
     edit(message, reply_text)
 
@@ -529,7 +526,7 @@ def zalgofy(message):
             reply_text.append(charac)
             continue
 
-        for _ in range(0, 3):
+        for _ in range(3):
             charac += choice(ZALGS[randint(0, 2)]).strip()
 
         reply_text.append(charac)
@@ -602,15 +599,13 @@ def clap(message):
 @sedenify(pattern='^.lfy')
 def lfy(message):
     textx = message.reply_to_message
-    qry = extract_args(message)
-    if qry:
+    if qry := extract_args(message):
         query = str(qry)
     elif textx:
         query = textx
     else:
         edit(message, f'`{get_translation("wrongCommand")}`')
         return
-        query = query.message
     query_encoded = query.replace(' ', '+')
     lfy_url = f'http://lmgtfy.com/?s=g&iie=1&q={query_encoded}'
     payload = {'format': 'json', 'url': lfy_url}
@@ -692,7 +687,7 @@ def type(message):
 @sedenify(pattern='^[Ss]krrt$')
 def skrrt(message):
     t = f'{(message.text or message.caption)[0]}krrt'
-    for j in range(16):
+    for _ in range(16):
         t = f'{t[:-1]}rt'
         edit(message, t)
 
@@ -700,7 +695,7 @@ def skrrt(message):
 @sedenify(pattern='^[Oo]of$')
 def oof(message):
     t = f'{(message.text or message.caption)[0]}of'
-    for j in range(16):
+    for _ in range(16):
         t = f'{t[:-1]}of'
         edit(message, t)
 

@@ -16,11 +16,7 @@ translate_cache = {}
 
 
 def get_language_files():
-    items = []
-    for i in listdir(pwd):
-        if i[-5:] == '.json':
-            items.append(i)
-    return items
+    return [i for i in listdir(pwd) if i[-5:] == '.json']
 
 
 def get_language_keys():

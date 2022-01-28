@@ -37,13 +37,7 @@ def get_notes(chat_id):
 
 
 def add_note(chat_id, keyword, reply, f_mesg_id):
-    to_check = get_note(chat_id, keyword)
-    if not to_check:
-        adder = Notes(str(chat_id), keyword, reply, f_mesg_id)
-        SESSION.add(adder)
-        SESSION.commit()
-        return True
-    else:
+    if to_check := get_note(chat_id, keyword):
         rem = SESSION.query(Notes).get((str(chat_id), keyword))
         SESSION.delete(rem)
         SESSION.commit()
@@ -51,13 +45,17 @@ def add_note(chat_id, keyword, reply, f_mesg_id):
         SESSION.add(adder)
         SESSION.commit()
         return False
+    else:
+        adder = Notes(str(chat_id), keyword, reply, f_mesg_id)
+        SESSION.add(adder)
+        SESSION.commit()
+        return True
 
 
 def rm_note(chat_id, keyword):
-    to_check = get_note(chat_id, keyword)
-    if not to_check:
-        return False
-    else:
+    if to_check := get_note(chat_id, keyword):
         SESSION.delete(to_check)
         SESSION.commit()
         return True
+    else:
+        return False

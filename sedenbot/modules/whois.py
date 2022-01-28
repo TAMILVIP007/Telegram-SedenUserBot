@@ -47,8 +47,6 @@ def who_is(client, message):
             photo = download_media_wc(user_photo, 'photo.png')
         except BaseException:
             photo = None
-            pass
-
         first_name = reply_user.first_name or get_translation('notSet')
         last_name = reply_user.last_name or get_translation('notSet')
         username = (
@@ -86,10 +84,11 @@ def who_is(client, message):
                 chats,
                 bio,
                 last_seen,
-                sudo if sudo else '',
-                blacklist if blacklist else '',
+                sudo or '',
+                blacklist or '',
             ],
         )
+
 
         if photo and media_perm:
             reply_img(

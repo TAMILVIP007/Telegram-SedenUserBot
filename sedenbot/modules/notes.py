@@ -47,9 +47,7 @@ def notes(message):
     for note in notesx:
         if reply == f'`{get_translation("noNote")}`':
             reply = f'{get_translation("notesChats")}\n'
-            reply += '`#{}`\n'.format(note.keyword)
-        else:
-            reply += '`#{}`\n'.format(note.keyword)
+        reply += '`#{}`\n'.format(note.keyword)
     edit(message, reply)
 
 
@@ -114,9 +112,7 @@ def get_note(message):
             return
 
         notename = extract_args(message).split()[0][1:]
-        note = get_note(message.chat.id, notename)
-
-        if note:
+        if note := get_note(message.chat.id, notename):
             if note.f_mesg_id:
                 msg_o = get_messages(LOG_ID, msg_ids=int(note.f_mesg_id))
                 if msg_o and len(msg_o) > 0 and not msg_o[-1].empty:

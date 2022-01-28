@@ -35,8 +35,7 @@ def unmutechat(message):
     except BaseException:
         edit(message, f'`{get_translation("nonSqlMode")}`')
         return
-    status = unkread(str(message.chat.id))
-    if status:
+    if status := unkread(str(message.chat.id)):
         edit(message, f'`{get_translation("chatUnmuted")}`')
     else:
         edit(message, f'`{get_translation("chatAlreadyUnmuted")}`')
@@ -51,8 +50,7 @@ def mutechat(message):
     except BaseException:
         edit(message, f'`{get_translation("nonSqlMode")}`')
         return
-    status = kread(str(message.chat.id))
-    if status:
+    if status := kread(str(message.chat.id)):
         edit(message, f'`{get_translation("chatMuted")}`')
     else:
         edit(message, f'`{get_translation("chatAlreadyMuted")}`')
@@ -102,8 +100,7 @@ def is_muted(chat_id):
     except BaseException:
         return False
 
-    kread = is_kread()
-    if kread:
+    if kread := is_kread():
         for i in kread:
             if i.groupid == str(chat_id):
                 return True

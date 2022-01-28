@@ -35,10 +35,9 @@ def autopic(client, message):
         if autopic:
             del TEMP_SETTINGS[KEY_AUTOPP]
             edit(message, f'`{get_translation("autoppDisabled")}`')
-            return
         else:
             edit(message, f'`{get_translation("autoppDisabledAlready")}`')
-            return
+        return
     elif autopic:
         edit(message, f'`{get_translation("autoppEnabledAlready")}`')
         return
@@ -54,19 +53,18 @@ def autopic(client, message):
 
     if path.exists(downloaded_file_name):
         LOGS.info(get_translation('autoppLog'))
+    elif AUTO_PP and len(AUTO_PP) > 0:
+        with open(downloaded_file_name, 'wb') as load:
+            load.write(get(AUTO_PP).content)
     else:
-        if AUTO_PP and len(AUTO_PP) > 0:
-            with open(downloaded_file_name, 'wb') as load:
-                load.write(get(AUTO_PP).content)
-        else:
-            try:
-                profile_photo = client.get_profile_photos('me', limit=1)
-                downloaded_file_name = download_media_wc(
-                    profile_photo[0], downloaded_file_name
-                )
-            except BaseException:
-                edit(message, f'`{get_translation("autoppConfig")}`')
-                return
+        try:
+            profile_photo = client.get_profile_photos('me', limit=1)
+            downloaded_file_name = download_media_wc(
+                profile_photo[0], downloaded_file_name
+            )
+        except BaseException:
+            edit(message, f'`{get_translation("autoppConfig")}`')
+            return
 
     edit(message, f'`{get_translation("autoppResult")}`')
 

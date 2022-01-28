@@ -62,7 +62,7 @@ def spam(message):
 
     miktar = int(arr[0])
     metin = spam.replace(arr[0], '', 1).strip()
-    for i in range(0, miktar):
+    for _ in range(miktar):
         reply(message, metin)
         count = increment_spam_count()
         if not count:
@@ -84,7 +84,7 @@ def picspam(message):
 
     miktar = int(arr[0])
     link = arr[1]
-    for i in range(0, miktar):
+    for _ in range(miktar):
         reply_img(message, link)
         count = increment_spam_count()
         if not count:
@@ -111,7 +111,7 @@ def delayspam(message):
         return
 
     delaySpamEvent = Event()
-    for i in range(0, miktar):
+    for i in range(miktar):
         if i != 0:
             delaySpamEvent.wait(gecikme)
         reply(message, spam_message)

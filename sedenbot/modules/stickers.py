@@ -25,7 +25,7 @@ from sedenecem.core import (
 from sedenecem.core import sticker_resize as resizer
 
 # ================= CONSTANT =================
-DIZCILIK = [get_translation(f'kangstr{i+1}') for i in range(0, 12)]
+DIZCILIK = [get_translation(f'kangstr{i+1}') for i in range(12)]
 # ================= CONSTANT =================
 
 

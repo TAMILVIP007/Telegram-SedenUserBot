@@ -131,10 +131,8 @@ def sedenify(**args):
 
                     ftext += out
 
-                    file = open(get_translation('rbgLog'), 'w+')
-                    file.write(ftext)
-                    file.close()
-
+                    with open(get_translation('rbgLog'), 'w+') as file:
+                        file.write(ftext)
                     send_log_doc(
                         get_translation('rbgLog'), caption=text, remove_file=True
                     )

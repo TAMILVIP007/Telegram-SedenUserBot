@@ -61,8 +61,7 @@ def filter_incoming(message):
         message.continue_propagation()
 
     for trigger in filters:
-        pro = fullmatch(trigger.keyword, name, flags=IGNORECASE)
-        if pro:
+        if pro := fullmatch(trigger.keyword, name, flags=IGNORECASE):
             if trigger.f_mesg_id:
                 msg_o = get_messages(LOG_ID, msg_ids=int(trigger.f_mesg_id))
                 if msg_o and len(msg_o) > 0 and not msg_o[-1].empty:
@@ -141,10 +140,7 @@ def filters(message):
     for filt in filters:
         if transact == f'`{get_translation("noFilter")}`':
             transact = f'{get_translation("filterChats")}\n'
-            transact += '`{}`\n'.format(filt.keyword)
-        else:
-            transact += '`{}`\n'.format(filt.keyword)
-
+        transact += '`{}`\n'.format(filt.keyword)
     edit(message, transact)
 
 

@@ -56,9 +56,9 @@ def blacklist(message):
         message.continue_propagation()
 
     msg_removed = False
+    regex1 = r'( |^|[^\w])'
+    regex2 = r'( |$|[^\w])'
     for snip in snips:
-        regex1 = r'( |^|[^\w])'
-        regex2 = r'( |$|[^\w])'
         pattern = f"{regex1}{escape(snip)}{regex2}"
         if search(pattern, name, flags=IGNORECASE):
             try:
@@ -83,8 +83,9 @@ def addblacklist(message):
         edit(message, f'`{get_translation("blacklistText")}`')
         return
     to_blacklist = list(
-        set(trigger.strip() for trigger in text.split("\n") if trigger.strip())
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
     )
+
     for trigger in to_blacklist:
         sql.add_to_blacklist(message.chat.id, trigger.lower())
     edit(message, get_translation('blacklistAddSuccess', ['**', '`', text]))
@@ -125,12 +126,14 @@ def rmblacklist(message):
         edit(message, f'`{get_translation("blacklistText")}`')
         return
     to_unblacklist = list(
-        set(trigger.strip() for trigger in text.split("\n") if trigger.strip())
+        {trigger.strip() for trigger in text.split("\n") if trigger.strip()}
     )
-    successful = 0
-    for trigger in to_unblacklist:
-        if sql.rm_from_blacklist(message.chat.id, trigger.lower()):
-            successful += 1
+
+    successful = sum(
+        bool(sql.rm_from_blacklist(message.chat.id, trigger.lower()))
+        for trigger in to_unblacklist
+    )
+
     edit(message, get_translation('blacklistRemoveSuccess', ['**', '`', text]))
 
 

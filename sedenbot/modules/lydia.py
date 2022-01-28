@@ -47,8 +47,7 @@ def addcf(message):
         )
     edit(message, f'`{get_translation("processing")}`')
     sleep(3)
-    reply_msg = message.reply_to_message
-    if reply_msg:
+    if reply_msg := message.reply_to_message:
         session = lydia.create_session()
         if not reply_msg.from_user.id:
             return edit(message, f'`{get_translation("lydiaError")}`')
@@ -93,9 +92,7 @@ def user(message):
         msg = message.text
         message.reply_chat_action('typing')
         text_rep = session.think_thought(msg)
-        wait_time = 0
-        for i in range(len(text_rep)):
-            wait_time = wait_time + 0.1
+        wait_time = sum(0.1 for _ in range(len(text_rep)))
         sleep(wait_time)
         reply(message, text_rep)
     except BaseException:

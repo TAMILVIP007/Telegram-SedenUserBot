@@ -102,8 +102,7 @@ def img(message):
         lim = lim.replace('lim=', '')
         query = query.replace('lim=' + lim[0], '')
         lim = int(lim)
-        if lim > 10:
-            lim = 10
+        lim = min(lim, 10)
     except IndexError:
         lim = 3
 
@@ -185,8 +184,7 @@ def google(message):
 
 def do_gsearch(query, page):
     def find_page(num):
-        if num < 1:
-            num = 1
+        num = max(num, 1)
         return (num - 1) * 10
 
     def parse_key(keywords):
@@ -204,7 +202,7 @@ def do_gsearch(query, page):
 
     def link_replacer(link):
         rep = {'(': '%28', ')': '%29', '[': '%5B', ']': '%5D', '%': '½'}
-        for i in rep.keys():
+        for i in rep:
             link = link.replace(i, rep[i])
         return link
 
@@ -295,8 +293,7 @@ def do_ddsearch(res1):
                 if comp:
                     subs.append(tlist)
                 comp = True
-                tlist = []
-                tlist.append(res3)
+                tlist = [res3]
             elif res4 := item.find('td', {'class': ['result-snippet']}):
                 tlist.append(res4)
                 subs.append(tlist)
@@ -337,17 +334,16 @@ def urbandictionary(message):
     if int(meanlen) >= 0:
         if int(meanlen) >= 4096:
             edit(message, f'`{get_translation("outputTooLarge")}`')
-            file = open('urbandictionary.txt', 'w+')
-            file.write(
-                'Query: '
-                + query
-                + '\n\nMeaning: '
-                + mean[0]['def']
-                + '\n\n'
-                + 'Örnek: \n'
-                + mean[0]['example']
-            )
-            file.close()
+            with open('urbandictionary.txt', 'w+') as file:
+                file.write(
+                    'Query: '
+                    + query
+                    + '\n\nMeaning: '
+                    + mean[0]['def']
+                    + '\n\n'
+                    + 'Örnek: \n'
+                    + mean[0]['example']
+                )
             reply_doc(
                 message,
                 'urbandictionary.txt',
@@ -385,9 +381,8 @@ def wiki(message):
         return
     result = summary(match)
     if len(result) >= 4096:
-        file = open('wiki.txt', 'w+')
-        file.write(result)
-        file.close()
+        with open('wiki.txt', 'w+') as file:
+            file.write(result)
         reply_doc(message, 'wiki.txt', caption=f'`{get_translation("outputTooLarge")}`')
         if path.exists('wiki.txt'):
             remove('wiki.txt')

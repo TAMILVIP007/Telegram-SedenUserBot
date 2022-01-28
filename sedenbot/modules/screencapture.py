@@ -25,8 +25,7 @@ from sedenecem.core import (
 @sedenify(pattern=r'^.ss')
 def ss(message):
     input_str = extract_args(message)
-    link_match = match(r'\bhttp(.*)?://.*\.\S+', input_str)
-    if link_match:
+    if link_match := match(r'\bhttp(.*)?://.*\.\S+', input_str):
         link = link_match.group()
     else:
         edit(message, f'`{get_translation("ssUsage")}`')

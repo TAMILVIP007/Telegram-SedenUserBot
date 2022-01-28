@@ -36,9 +36,7 @@ def deepfry(message):
         frycount = 1
 
     MAX_LIMIT = 5
-    if frycount > MAX_LIMIT:
-        frycount = MAX_LIMIT
-
+    frycount = min(frycount, MAX_LIMIT)
     reply = message.reply_to_message
 
     if not reply and message.caption:
@@ -68,10 +66,8 @@ def deepfry(message):
     for _ in range(frycount):
         image = deepfry_media(image, fry)
 
-    fried_io = open('image.jpeg', 'w+')
-    image.save(fried_io, 'JPEG')
-    fried_io.close()
-
+    with open('image.jpeg', 'w+') as fried_io:
+        image.save(fried_io, 'JPEG')
     reply_img(message, 'image.jpeg', delete_file=True, delete_orig=True)
 
 
@@ -133,9 +129,11 @@ def check_media(reply_message):
     data = False
 
     if reply_message and reply_message.media:
-        if reply_message.photo:
-            data = True
-        elif reply_message.sticker and not reply_message.sticker.is_animated:
+        if (
+            reply_message.photo
+            or reply_message.sticker
+            and not reply_message.sticker.is_animated
+        ):
             data = True
         elif reply_message.document:
             name = reply_message.document.file_name

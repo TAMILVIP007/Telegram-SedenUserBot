@@ -86,9 +86,8 @@ def reverse(message):
         for i in range(len(images)):
             k = get(images[i])
             n = f'reverse_{i}.png'
-            file = open(n, 'wb')
-            file.write(k.content)
-            file.close()
+            with open(n, 'wb') as file:
+                file.write(k.content)
             yeet.append(InputMediaPhoto(n))
         reply_doc(message, yeet)
         edit(message, get_translation("reverseResult", [guess, fetchUrl, imgspage]))
@@ -129,7 +128,7 @@ def scam(results, lim):
 
     for imglink in oboi:
         counter += 1
-        if not counter >= int(lim):
+        if counter < int(lim):
             imglinks.append(imglink)
         else:
             break

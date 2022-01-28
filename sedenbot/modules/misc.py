@@ -45,8 +45,7 @@ def chatid(message):
 
 @sedenify(pattern='^.id$')
 def userid(message):
-    reply = message.reply_to_message
-    if reply:
+    if reply := message.reply_to_message:
         if not reply.forward_from:
             user_id = reply.from_user.id
             if reply.from_user.username:
@@ -115,7 +114,7 @@ def repeat(message):
 
     replyText = f'{toBeRepeated}\n'
 
-    for i in range(0, replyCount - 1):
+    for _ in range(replyCount - 1):
         replyText += f'{toBeRepeated}\n'
 
     edit(message, replyText)
@@ -146,7 +145,7 @@ def report_admin(client, message):
     for member in client.iter_chat_members(chat, filter='administrators'):
         msg += f'[\u2063](tg://user?id={member.user.id})'
     re_msg = message.reply_to_message
-    reply(re_msg if re_msg else message, msg)
+    reply(re_msg or message, msg)
     message.delete()
 
 

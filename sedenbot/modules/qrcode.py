@@ -82,9 +82,7 @@ def barcode(message):
             media_list = None
             with open(downloaded_file_name, 'rb') as file:
                 media_list = file.readlines()
-            qrmsg = ''
-            for media in media_list:
-                qrmsg += media.decode('UTF-8') + '\r\n'
+            qrmsg = ''.join(media.decode('UTF-8') + '\r\n' for media in media_list)
             remove(downloaded_file_name)
         else:
             qrmsg = reply
@@ -117,9 +115,7 @@ def makeqr(message):
             media_list = None
             with open(downloaded_file_name, 'rb') as file:
                 media_list = file.readlines()
-            qrmsg = ''
-            for media in media_list:
-                qrmsg += media.decode('UTF-8') + '\r\n'
+            qrmsg = ''.join(media.decode('UTF-8') + '\r\n' for media in media_list)
             remove(downloaded_file_name)
         else:
             qrmsg = reply

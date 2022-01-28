@@ -13,7 +13,7 @@ _admin_status_list = ['creator', 'administrator']
 
 
 def is_admin(message):
-    if not 'group' in message.chat.type:
+    if 'group' not in message.chat.type:
         return True
 
     user = app.get_chat_member(chat_id=message.chat.id, user_id=message.from_user.id)

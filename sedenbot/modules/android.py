@@ -87,8 +87,7 @@ def device(message):
             'certified-android-devices/master/by_device.json'
         ).text
     )
-    results = data.get(codename)
-    if results:
+    if results := data.get(codename):
         reply = "{}\n".format(get_translation('deviceSearch', ['**', codename]))
         for item in results:
             reply += get_translation(
@@ -123,17 +122,13 @@ def codename(message):
         ).text
     )
     devices_lower = {k.lower(): v for k, v in data.items()}
-    devices = devices_lower.get(brand)
-    if not devices:
-        reply = get_translation('codenameError', ['`', device])
-    else:
-        results = [
+    if devices := devices_lower.get(brand):
+        if results := [
             i
             for i in devices
             if device.lower() in i['name'].lower()
             or device.lower() in i['model'].lower()
-        ]
-        if results:
+        ]:
             reply = f'{get_translation("codenameSearch", ["**", brand, device])}\n'
             if len(results) > 8:
                 results = results[:8]
@@ -144,6 +139,8 @@ def codename(message):
                 )
         else:
             reply = get_translation('codenameError', ['`', device])
+    else:
+        reply = get_translation('codenameError', ['`', device])
     edit(message, reply)
 
 
@@ -404,12 +401,10 @@ def get_random_proxy():
     proxy = f'http://{proxy[0]}:{proxy[1]}'
     put_stored_proxy(proxy)
 
-    proxy_dict = {
+    return {
         'https': proxy,
         'http': proxy,
     }
-
-    return proxy_dict
 
 
 class OFRPDeviceInfo:

@@ -40,9 +40,11 @@ ALWAYS_ONLINE = 'offline'
 @sedenify(pattern='^.reserved$', compat=False)
 def reserved(client, message):
     sonuc = client.send(channels.GetAdminedPublicChannels())
-    mesaj = ''
-    for channel_obj in sonuc.chats:
-        mesaj += f'{channel_obj.title}\n@{channel_obj.username}\n\n'
+    mesaj = ''.join(
+        f'{channel_obj.title}\n@{channel_obj.username}\n\n'
+        for channel_obj in sonuc.chats
+    )
+
     edit(message, mesaj)
 
 
@@ -137,7 +139,7 @@ def blockpm(client, message):
         uid = replied_user.id
     else:
         aname = message.chat
-        if not aname.type == 'private':
+        if aname.type != 'private':
             edit(message, f'`{get_translation("pmApproveError")}`')
             return
         name0 = aname.first_name
@@ -183,10 +185,9 @@ def online(client, message):
         if offline:
             del TEMP_SETTINGS[ALWAYS_ONLINE]
             edit(message, f'`{get_translation("alwaysOnlineOff")}`')
-            return
         else:
             edit(message, f'`{get_translation("alwaysOnlineOff2")}`')
-            return
+        return
     elif offline:
         edit(message, f'`{get_translation("alwaysOnline2")}`')
         return
@@ -206,14 +207,13 @@ def online(client, message):
 @sedenify(pattern='^.stats$', compat=False)
 def user_stats(client, message):
     edit(message, f'`{get_translation("processing")}`')
+    unread = 0
+    user = []
     chats = 0
     channels = 0
     groups = 0
     sgroups = 0
     pms = 0
-    bots = 0
-    unread = 0
-    user = []
     for i in client.iter_dialogs():
         chats += 1
         if i.chat.type == 'channel':
@@ -230,10 +230,7 @@ def user_stats(client, message):
             unread += 1
 
     users = client.get_users(user)
-    for i in users:
-        if i.is_bot:
-            bots += 1
-
+    bots = sum(bool(i.is_bot) for i in users)
     edit(
         message,
         get_translation(
